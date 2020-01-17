@@ -1,57 +1,58 @@
-#include <stdbool.h>  
-#include <stdio.h>  
-#include <stdlib.h>  
-#include <string.h>  
+#include<stdio.h>  
+#include<stdlib.h>  
+#include<string.h>  
+#define Max 100  
   
-int convert(char c){  
-    if(c >= 'A' && c <= 'Z')  
-        return c-'A';  
-    else if(c >= 'a' && c <= 'z')  
-        return c-'a';  
-    else  
-        return -1;  
+int Stack[Max];  
+int top=-1;  
+  
+void Push(int data){  
+    if(top==Max){return;}  
+    Stack[++top] = data;  
 }  
   
+int Pop(void){  
+    if(top == -1){return -1;}  
+    return Stack[top--];  
+}  
   
-  
-  
-int main(){  
-    char target[1000];  
-    int cnt_target[26];  
-  
-    while (scanf("%s", target) != EOF){  
-        memset(cnt_target, 0, sizeof(cnt_target));  
-  
-        for (int i = 0; i < (int)strlen(target); i++)  
-            cnt_target[convert(target[i])]++;  
-  
-        int n;  
-        scanf("%d", &n);  
-  
-        for (int i = 0; i < n; i++){  
-            char inp[1000];  
-            scanf("%s", inp);  
-  
-            int cnt[26] = {0};  
-  
-  
-  
-            for (int i = 0; i < (int)strlen(inp); i++)  
-                cnt[convert(inp[i])]++;  
-  
-  
-  
-            bool error = false;  
-  
-  
-  
-            for (int i = 0; i < 26; i++)  
-                if (cnt[i] != cnt_target[i])  
-                    error = true;  
-            if (!error)  
-                printf("%s\n", inp);  
-        }  
+int operate(int op1,int op2,char sym){  
+    switch(sym)  
+    {  
+        case '+': return op1+op2;  
+        case '-': return op1-op2;  
+        case '*': return op1*op2;  
+        case '/': return op1/op2;  
+        case '%': return op1%op2;  
     }  
+    return -1;  
+}  
   
+int main(void){  
+    char line[Max],t;  
+    int i,num,test;  
+    int op1,op2,ans;  
+  
+    while((fgets(line,Max,stdin))!=NULL){  
+        if(line[0]=='0'){break;}  
+        line[strlen(line)-1]='\0';  
+  
+        for(i=0;line[i]!='\0';i++){  
+            t =line[i];  
+            test = isdigit(t);  
+            if(test!=0){  
+                num = t - '0';  
+                Push(num);  
+            }  
+            else{  
+                op2 = Pop();  
+                op1 = Pop();  
+                ans = operate(op1,op2,t);  
+                Push(ans);  
+            }  
+        }  
+        ans = Pop();  
+        printf("%d\n",ans);  
+    }  
     return 0;  
-}
+}  

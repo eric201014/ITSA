@@ -1,19 +1,37 @@
-#include<stdio.h>  
-#include<stdlib.h>  
-int cmp(const void *a,const void *b){  
-    return *(int*)a-*(int*)b;  
+#include <stdio.h>  
+#include <stdlib.h>  
+#include <stdbool.h>  
+  
+int cmp(const void *a, const void *b){  
+  return (*(int*)a - *(int*)b);  
 }  
+  
+bool check(int a, int b, int c){  
+    if(a+b>c && a+c>b && b+c>a)  
+        return true;  
+    else  
+        return false;  
+}  
+  
 int main(){  
-    int ncase,n;  
-    int i;  
-    scanf("%d",&ncase);  
-    while(ncase--){  
-        scanf("%d",&n);  
-        int N[n*2];  
-        for(i=0;i<n*2;i++)  
-            scanf("%d",&N[i]);  
-        qsort(N,n*2,sizeof(int),cmp);  
-        printf("%d\n",N[n-1]);  
+    int i, j, k;  
+    int number;  
+    int *list;  
+  
+    list = calloc(60, sizeof(int));  
+  
+    while(scanf("%d", &number)==1){  
+        for(i = 0; i < number; i++)  
+            scanf("%d", &list[i]);  
+  
+        qsort(list, number, sizeof(int), cmp);  
+  
+        for(i = 0; i < number-2; i++)  
+            for(j = i+1; j < number-1; j++)  
+                for(k = j+1; k < number; k++)  
+                    if(check(list[i], list[j], list[k]) == true)  
+                        printf("%d %d %d\n", list[i], list[j], list[k]);  
     }  
+  
     return 0;  
 }  

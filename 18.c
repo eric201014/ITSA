@@ -1,83 +1,32 @@
-#include <stdio.h>  
-#include <stdlib.h>  
-  
-void compute_carry(int a, int b, int *answer, int *carry){  
-    while(a!=0 && b!=0){  
-        if((*carry)+a%10+b%10 > 9){  
-            (*answer)++;  
-            (*carry) = 1;  
+#include<stdio.h>  
+#include<stdlib.h>  
+#include<limits.h>  
+int main(void)  
+{  
+    int np,i,j,max = 0,min = INT_MAX,distence = INT_MAX,pos;  
+    scanf("%d",&np);  
+    int point[np][3];  
+    for(i=0;i<np;i++)  
+        scanf("%d%d",&point[i][0],&point[i][1]);  
+    for(i=0;i<np;i++){  
+        max = 0;  
+        for(j=0;j<np;j++){  
+            distence = (point[i][0] -  point[j][0]) * (point[i][0] -  point[j][0]) + (point[i][1] -  point[j][1]) * (point[i][1] -  point[j][1]);  
+            if(distence > max)  
+                max = distence;  
         }  
-        else  
-            (*carry) = 0;  
-  
-        a /= 10;  
-        b /= 10;  
+        if(max < min){  
+            min = max;  
+            pos = i;  
+        }  
+        else if(max == min){  
+            if(point[i][0] < point[pos][0]){  
+                pos = i;  
+            }  
+            else if(point[i][1] < point[pos][1] && point[i][0] == point[pos][0])  
+                pos = i;  
+        }  
     }  
-}  
-  
-void compute_carry_one(int number, int *answer, int *carry){  
-    while(number != 0){  
-        if((*carry)+number%10 > 9){  
-            (*answer)++;  
-            (*carry) = 1;  
-        }  
-        else  
-            (*carry) = 0;  
-  
-        number /= 10;  
-    }  
-}  
-  
-int main(){  
-    int a, b;  
-    int answer, carry;  
-  
-    while(scanf("%d %d", &a, &b)!=EOF){  
-        if(a == 0 && b == 0)  
-            break;  
-  
-        answer = 0, carry = 0;  
-  
-        while(a!=0 && b!=0){  
-            if(carry+a%10+b%10 > 9){  
-                answer++;  
-                carry = 1;  
-            }  
-            else  
-                carry = 0;  
-  
-            a /= 10;  
-            b /= 10;  
-        }  
-  
-        while(a != 0){  
-            if(carry+a%10 > 9){  
-                answer++;  
-                carry = 1;  
-            }  
-            else{  
-                carry = 0;  
-            }  
-  
-            a /= 10;  
-        }  
-  
-        while(b != 0){  
-            if(carry+b%10 > 9){  
-                answer++;  
-                carry = 1;  
-            }  
-            else  
-                carry = 0;  
-  
-            b /= 10;  
-        }  
-  
-        if(answer == 0)  
-            printf("No carry operation.\n");  
-        else  
-            printf("%d carry operation%s.\n", answer, answer==1?"":"s");  
-    }  
-  
+    printf("%d %d\n",point[pos][0],point[pos][1]);  
     return 0;  
 }  
